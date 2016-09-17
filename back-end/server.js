@@ -5,6 +5,7 @@ const express = require('express');
 
 let app = express();
 
+app.use(express.static(__dirname + '/../front-end'));
 app.use(require('method-override')());
 app.use(require('body-parser').urlencoded({extended: false}));
 app.use(require('body-parser').json());

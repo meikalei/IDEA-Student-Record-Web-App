@@ -1,25 +1,44 @@
 'use strict';
 
 const db = require(__dirname + '/../lib/mysql');
+const _ = require(__dirname + '/xss');
 
-exports.add_student = (req, res, next) => {
-    const query_string ='INSERT INTO student (name, batch, studno, course, college, sex) VALUES (?, ?, ?, ?, ?, ?)'; 
-    const payload = [req.body.name, req.body.batch, req.body.studno, req.body.course, req.body.college, req.body.sex];
+exports.add_student = (student, success) => {
+    const query_string ='INSERT INTO student SET ?'; 
+    const payload = {
+        name : student.name,
+        batch : student.batch,
+        studno : student.studno,
+        course : student.course,
+        college : student.college,
+        sex : student.sex
+    };
+    console.log(payload);
     
     db.query(query_string, payload, (err, data) => {
-        res.send(data);
+        if(!err) {
+            success({ status : 'successful' });
+            console.log(data);
+        } else {
+            console.log(err);
+        }
     });
-};
+}
 
-exports.get_all_students = (req, res, next) => {
+exports.get_all_students = (callback) => {
     const query_string = 'SELECT * FROM student';
 
-    db.query(query_string, (err, data) => {
-        res.send(data);
+    db.query(query_string, (err, rows, fields) => {
+        if(!err) {
+            callback(rows);
+            //console.log(rows);
+        } else {
+            console.log(err);
+        }
     });
 };
 
-exports.get_students_by_sex = (req, res, next) => {
+/*exports.get_students_by_sex = (req, res, next) => {
     const query_string = 'SELECT * FROM student WHERE sex = ?';
     const payload = [req.params.sex];
 
@@ -89,4 +108,4 @@ exports.delete_student = (req, res, next) => {
     db.query(query_string, payload, (err, data) => {
         res.send(data);
     });
-};
+};*/

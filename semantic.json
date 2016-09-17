@@ -1,0 +1,60 @@
+{
+  "base": "front-end/assets/css/semantic/",
+  "paths": {
+    "source": {
+      "config": "src/theme.config",
+      "definitions": "src/definitions/",
+      "site": "src/site/",
+      "themes": "src/themes/"
+    },
+    "output": {
+      "packaged": "out/",
+      "uncompressed": "out/components/",
+      "compressed": "out/components/",
+      "themes": "out/themes/"
+    },
+    "clean": "dist/"
+  },
+  "permission": false,
+  "autoInstall": false,
+  "rtl": false,
+  "components": [
+    "reset",
+    "site",
+    "button",
+    "container",
+    "divider",
+    "header",
+    "icon",
+    "image",
+    "input",
+    "label",
+    "list",
+    "loader",
+    "segment",
+    "form",
+    "grid",
+    "menu",
+    "message",
+    "table",
+    "card",
+    "item",
+    "checkbox",
+    "dimmer",
+    "dropdown",
+    "modal",
+    "nag",
+    "popup",
+    "progress",
+    "search",
+    "shape",
+    "sidebar",
+    "sticky",
+    "transition",
+    "api",
+    "form",
+    "state",
+    "visibility"
+  ],
+  "version": "2.2.4"
+}

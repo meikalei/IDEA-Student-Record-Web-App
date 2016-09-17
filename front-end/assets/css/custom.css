@@ -1,0 +1,24 @@
+/************** BRAND AND MENU BAR **************/
+#brand, #menu-bar, #logo{
+    margin:0;
+}
+
+#search-bar input{
+    width: 500px;
+}
+
+.ui.cards>.card>.image{
+    background: rgba(0,0,0,0);
+}
+
+.field{
+    width: 300px;
+}
+
+.scrolling.dimmable.dimmed>.dimmer {
+    overflow: auto;
+}
+
+#cardId{
+    display: block;
+}
