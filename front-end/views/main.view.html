@@ -1,17 +1,20 @@
+<!-- images grabbed from semantic-ui.com -->
+
+<!-- HEADER -->
 <div id="brand" class="ui inverted segment">
     <div class="ui inverted secondary menu centered grid">
     <div class="card">
         <div class="content medium">
             <a href="http://localhost:8000/#/">
-            <img id="logo" class="ui left floated tiny circular image" src="http://semantic-ui.com/images/avatar2/large/elyse.png">
+            <img id="logo" class="ui left floated mini circular image" src="http://semantic-ui.com/images/avatar2/large/elyse.png">
             </a>
-            <div class="header">WELCOME TO STURE</div>
-            <div class="description">A Student Record Web Application</div>
+            <div class="header">WELCOME TO STUDENT RECORD WEB APP</div>
         </div>
     </div>
     </div>
 </div>
 
+<!-- MENU BAR -->
 <div id="menu-bar" class="ui borderless secondary menu centered grid">
     <div id="add-button" class="item">
         <div class="ui red inverted button"><i class="align add user icon"></i>ADD</div>
@@ -19,13 +22,12 @@
     <div id="search-bar" class="item">
         <div class="ui action left icon input">
             <i class="search icon"></i>
-            <input type="text" placeholder="Search">
+            <input type="text" placeholder="Search" ng-model="searchBox">
             <div class="ui basic floating dropdown button">
                 <div class="text">Filter</div>
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <div class="item active">Filter</div>
-                    <div class="item"><a href="/#/students">All</a></div>
                     <div class="item">Sex</div>
                     <div class="item">Batch</div>
                     <div class="item">Course</div>
@@ -36,8 +38,113 @@
     </div>
 </div>
 
-<div class="ui small modal" ng-controller="StudentCtrl">
-    <i class="close icon"></i>
+<div class="ui special link cards four doubling stackable grid container" ng-controller="StudentCtrl">
+    <!-- STUDENT PROFILE -->
+    <div id="cardId" class="card column" ng-repeat="student in students | filter:searchBox">
+        <div class="image" del-edit-directive>
+            <div id="deledit-btn">
+                <div class="ui inverted icon standard delete button" ng-click="getCurrentStudent(student)" del-button-directive><i class="remove icon"></i></div>
+                <br>
+                <div class="ui inverted icon standard edit button" ng-click="getCurrentStudent(student)" edit-button-directive><i class="write icon"></i></div>
+            </div>
+            <img class="ui medium image" src="http://semantic-ui.com/images/avatar2/large/matthew.png">
+            <div class="content">
+                <div class="header">{{student.name}}</div>
+                <div class="meta">
+                    <p class="student-num">{{student.batch + '-' + student.studno}}</p>
+                </div>
+                <div class="description">
+                    {{student.course | uppercase}}<br>
+                    {{student.college}}<br>
+                    {{'Batch ' + student.batch}}<br>
+                    {{student.sex}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div id="delete-modal" class="ui basic small modal">
+        <div class="ui icon header">
+            <i class="archive icon"></i>
+            Delete Student
+        </div>
+        <div class="content">
+            <p>Are you sure you want to deleted this on student records?</p>
+        </div>
+        <div class="actions">
+            <div class="ui cancel red basic inverted button">
+                <i class="remove icon"></i>
+                No
+            </div>
+            <div class="ui ok green basic inverted button right floated" ng-click="deleteStudent()">
+                <i class="checkmark icon"></i>
+                Yes
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div id="edit-modal" class="ui small modal">
+        <div class="header">EDIT STUDENT</div>
+            <div class="image content">
+            <div class="ui medium image">
+                <img src="http://semantic-ui.com/images/avatar2/large/rachel.png">
+            </div>
+            <div class="description">
+                <form class="ui form" method="PUT">
+                    <div class="ui success message"></div>
+                    <div class="sixteen wide field">
+                        <label>Name</label>
+                        <input type="text" name="name" placeholder="First name, M.I, Surname" ng-model="student.name">
+                    </div>
+                    <div class="fields">
+                        <div class="five wide field">
+                            <label>Batch</label>
+                            <input type="text" name="batch" placeholder="XXXX" ng-model="student.batch">
+                        </div>
+                        <div class="eleven wide field">
+                            <label>Student Number</label>
+                            <input type="text" name="studno" placeholder="XXXXX" ng-model="student.studno">
+                        </div>
+                    </div>
+                    <div class="sixteen wide field">
+                        <label>Course</label>
+                        <input type="text" name="course" ng-model="student.course">
+                    </div>
+                    <div class="sixteen wide field">
+                        <label>College</label>
+                        <select class="ui search dropdown" name="college" ng-model="student.college">
+                            <option value="">Select College</option>
+                            <option value="cas">CAS</option>
+                            <option value="ceat">CEAT</option>
+                            <option value="cdc">CDC</option>
+                            <option value="che">CHE</option>
+                            <option value="cem">CEM</option>
+                            <option value="cfnr">CFNR</option>
+                            <option value="ca">CA</option>
+                            <option value="gs">GS</option>
+                        </select>
+                    </div>
+                    <div class="inline field">
+                        <label>Sex: </label>
+                        <label><input type="radio" class="ui radio checkbox" name="sex" value="male" ng-model="student.sex">Male</label>
+                        <label><input type="radio" class="ui radio checkbox" name="sex" value="female" ng-model="student.sex">Female</label>
+                    </div>
+                    <div class="sixteen wide field">
+                        <div class="actions">
+                            <div class="ui green submit right floated labeled icon button" ng-click="editStudent(student)"">Save<i class="checkmark icon"></i></div>
+                            <div class="ui black deny right floated button">Cancel</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD MODAL -->
+<div id="add-modal" class="ui small modal" ng-controller="StudentCtrl">
     <div class="header">ADD STUDENT</div>
         <div class="image content">
         <div class="ui medium image">
@@ -45,23 +152,26 @@
         </div>
         <div class="description">
             <form class="ui form" method="POST">
-                <div id="name" class="field">
+                <div class="ui success message"></div>
+                <div class="sixteen wide field">
                     <label>Name</label>
                     <input type="text" name="name" placeholder="First name, M.I, Surname" ng-model="student.name">
                 </div>
-                <div class="field">
-                    <label>Batch</label>
-                    <input type="text" name="batch" ng-model="student.batch">
+                <div class="fields">
+                    <div class="five wide field">
+                        <label>Batch</label>
+                        <input type="text" name="batch" placeholder="XXXX" ng-model="student.batch">
+                    </div>
+                    <div class="eleven wide field">
+                        <label>Student Number</label>
+                        <input type="text" name="studno" placeholder="XXXXX" ng-model="student.studno">
+                    </div>
                 </div>
-                <div class="field">
-                    <label>Student Number</label>
-                    <input type="text" name="studno" ng-model="student.studno">
-                </div>
-                <div class="field">
+                <div class="sixteen wide field">
                     <label>Course</label>
                     <input type="text" name="course" ng-model="student.course">
                 </div>
-                <div class="field">
+                <div class="sixteen wide field">
                     <label>College</label>
                     <select class="ui search dropdown" name="college" ng-model="student.college">
                         <option value="">Select College</option>
@@ -80,16 +190,15 @@
                     <label><input type="radio" class="ui radio checkbox" name="sex" value="male" ng-model="student.sex">Male</label>
                     <label><input type="radio" class="ui radio checkbox" name="sex" value="female" ng-model="student.sex">Female</label>
                 </div>
-                <div class="field">
+                <div class="sixteen wide field">
                     <div class="actions">
-                        <div class="ui black deny button">Cancel</div>
-                        <div class="ui submit right labeled icon button" ng-click="addStudent(student)">Add<i class="checkmark icon"></i></div>
+                        <div class="ui green submit right floated labeled icon button" ng-click="addStudent(student)">Add<i class="checkmark icon"></i></div>
+                        <div class="ui black deny right floated button">Cancel</div>
                     </div>
                 </div>
-                <div class="ui error message"></div>
             </form>
         </div>
     </div>
-</div> 
+</div>
 
 <script type="text/javascript" src="/../assets/js/custom.js"></script>

@@ -3,109 +3,68 @@
 const db = require(__dirname + '/../lib/mysql');
 const _ = require(__dirname + '/xss');
 
-exports.add_student = (student, success) => {
+exports.add_student = (req, res, next) => {
     const query_string ='INSERT INTO student SET ?'; 
     const payload = {
-        name : student.name,
-        batch : student.batch,
-        studno : student.studno,
-        course : student.course,
-        college : student.college,
-        sex : student.sex
-    };
-    console.log(payload);
+        id : req.body.id,
+        name : req.body.name,
+        batch : req.body.batch,
+        studno : req.body.studno,
+        course : req.body.course,
+        college : req.body.college,
+        sex : req.body.sex
+    }
     
     db.query(query_string, payload, (err, data) => {
         if(!err) {
-            success({ status : 'successful' });
-            console.log(data);
+            console.log('STUDENT SUCCESSFULLY ADDED!');
         } else {
             console.log(err);
         }
     });
-}
+};
 
-exports.get_all_students = (callback) => {
+exports.get_all_students = (req, res, next) => {
     const query_string = 'SELECT * FROM student';
 
-    db.query(query_string, (err, rows, fields) => {
+    db.query(query_string, (err, students) => {
         if(!err) {
-            callback(rows);
-            //console.log(rows);
+            console.log(students);
+            res.json({ students : students});
+            console.log('SUCCESS GETTING STUDENTS');
         } else {
             console.log(err);
         }
     });
 };
 
-/*exports.get_students_by_sex = (req, res, next) => {
-    const query_string = 'SELECT * FROM student WHERE sex = ?';
-    const payload = [req.params.sex];
+exports.edit_student = (req, res, next) => {
+    const query_string ='UPDATE student SET id = ?, name = ?, batch = ?, studno = ?, course = ?, college = ?, sex = ? WHERE id = ?';
+    const id = req.body.batch + req.body.studno;
+    const payload = [id, req.body.name, req.body.batch, req.body.studno, req.body.course, req.body.college, req.body.sex, req.body.id];
 
-    db.query(query_string, payload, (err, data) => {
-        res.send(data);
-    });
-};
-
-exports.get_students_by_batch = (req, res, next) => {
-    const query_string = 'SELECT * FROM student WHERE batch = ?';
-    const payload = [req.params.batch];
-
-    db.query(query_string, payload, (err, data) => {
-        res.send(data);
-    });
-};
-
-exports.get_students_by_course = (req, res, next) => {
-    const query_string = 'SELECT * FROM student WHERE course = ?';
-    const payload = [req.params.course];
-
-    db.query(query_string, payload, (err, data) => {
-        res.send(data);
-    });
-};
-
-exports.get_students_by_college = (req, res, next) => {
-    const query_string = 'SELECT * FROM student WHERE college = ?';
-    const payload = [req.params.college];
-
-    db.query(query_string, payload, (err, data) => {
-        res.send(data);
-    });
-};
-
-exports.get_student_by_name = (req, res, next) => {
-    const query_string = 'SELECT * FROM student WHERE name = ?';
-    const payload = [req.params.name];
-
-    db.query(query_string, payload, (err, data) => {
-        res.send(data);
-    });
-};
-
-exports.get_student_by_studno = (req, res, next) => {
-    const query_string = 'SELECT * FROM student WHERE studno = ?';
-    const payload = [req.params.studno];
-
-    db.query(query_string, payload, (err, data) => {
-        res.send(data);
-    });
-};
-
-exports.update_student = (req, res, next) => {
-    const query_string ='UPDATE student SET name = ?, batch = ?, studno = ?, course = ?, college = ?, sex = ? WHERE studno = ?'; 
-    const payload = [req.body.name, req.body.batch, req.body.studno, req.body.course, req.body.college, req.body.sex, req.params.studno];
+    console.log(id);
     
     db.query(query_string, payload, (err, data) => {
-        res.send(data);
+        if(!err) {
+            console.log('STUDENT SUCCESSFULLY UPDATED!');
+        } else {
+            console.log(err);
+        }
     });
 };
 
 exports.delete_student = (req, res, next) => {
-    const query_string ='DELETE FROM student WHERE student_number = ?'; 
-    const payload = [req.params.student_number];
+    const query_string ='DELETE FROM student WHERE id = ?'; 
+    const payload = [req.params.id];
+
+    console.log(payload);
     
     db.query(query_string, payload, (err, data) => {
-        res.send(data);
+        if(!err) {
+            console.log('STUDENT SUCCESSFULLY DELETED!');
+        } else {
+            console.log(err);
+        }
     });
-};*/
+};

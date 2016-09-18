@@ -1,13 +1,30 @@
 'use strict';
 
-const student = require(__dirname + '/../controllers/student2');
+const student = require(__dirname + '/../controllers/studenttemp');
 
 module.exports = (router) => {
 
-    router.del = router.delete;
+    router.post('/api/student', (req, res) => {
+        student.add_student(req.body, (status) => {
+            res.json(status);
+            console.log(status);
+        });
+    });
 
-    router.post('/api/student',                    student.add_student);
-    router.get ('/api/all-students',                    student.get_all_students);
+    router.get('/api/all-students', (req, res) => {
+        student.get_all_students((students) => {
+            console.log(students);
+            res.json({ students : students});
+            console.log('SUCCESS GETTING STUDENTS');
+        })
+    });
+
+    router.delete('/api/delete-student/:studno', (req, res) => {
+        student.delete_student(req.params.studno, (status) => {
+            res.json(status);
+            console.log(status);
+        });
+    });
     /*router.get ('/api/students/sex/:sex',           student.get_students_by_sex);
     router.get ('/api/students/batch/:batch',       student.get_students_by_batch);
     router.get ('/api/students/course/:course',     student.get_students_by_course);

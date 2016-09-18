@@ -1,17 +1,21 @@
 $('.ui.dropdown').dropdown();
 
 $('.special.cards .card').hover(function(){
-    $(".delete.button").css("visibility","visible");
-    $(".edit.button").css("visibility","visible");
+    $('.delete.button').css('visibility','visible');
+    $('.edit.button').css('visibility','visible');
 }, function(){
-    $(".delete.button").css("visibility","hidden");
-    $(".edit.button").css("visibility","hidden");
+    $('.delete.button').css('visibility','hidden');
+    $('.edit.button').css('visibility','hidden');
 });
 
-$("#add-button .button").click(function(){
-    $('.ui.modal')
+$('#add-button').on('click', (function(){
+    $('#add-modal')
         .modal('show')
     ;
+}));
+
+$(document).on('click', '.delete.button', function(){
+    console.log('DELETE BUTTON CLICKED!');
 });
 
 $('.ui.radio.checkbox')
